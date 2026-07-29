@@ -36,7 +36,28 @@ resource "aws_instance" "public-ec2" {
     security_groups = [ aws_security_group.http-ssh-sg.id ]
     subnet_id = var.public-subnet[0]
     key_name = aws_key_pair.pub-key.key_name
-    user_data = file("C:/Users/Hp/Documents/3-tier architecture/EC2/install-nginx.sh")
+    user_data = <<-EOF
+      #!/bin/bash
+      dnf update -y
+      dnf install -y nginx
+
+      mkdir -p /usr/share/nginx/html
+
+      cat << 'HTML' > /usr/share/nginx/html/index.html
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Welcome</title>
+    </head>
+    <body>
+        <h1>Nginx Installed through script</h1>
+    </body>
+    HTML
+
+      systemctl enable nginx
+      systemctl start nginx
+    EOF
+
     tags = {
         Name="saad-public-ec2"
     }
