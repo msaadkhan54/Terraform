@@ -30,6 +30,16 @@ module "autoScaling" {
     target_group_arn = module.load_balancer.target_group_arn
 }
 
-module "remote-backend" {
-  source = "./Remote Backend"
+# module "remote-backend" {
+#   source = "./Remote Backend"
+# }
+
+module "public-rds" {
+  source = "./RDS"
+  public_subnet = module.VPC.public-subnet
+  vpc_id = module.VPC.vpc_id
+}
+
+module "s3-bucket" {
+  source="./S3-bucket"
 }

@@ -57,7 +57,6 @@ resource "aws_instance" "public-ec2" {
       systemctl enable nginx
       systemctl start nginx
     EOF
-
     tags = {
         Name="saad-public-ec2"
     }
